@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <style type="text/css">
+        html,body{padding:0;margin:0;width:100%;height:100%;}
+        #wrapper{width:100%;height:100%;background-color:orange;}
+    </style>
+    <script type="text/javascript">
+        window.onload = function () {
+            var wrapper = document.getElementById("wrapper");
+            wrapper.addEventListener("touchstart", function () { console.log("body touchstart"); dragPos(event); }, false);
+            wrapper.addEventListener("touchmove", function () { console.log("body touchmove"); dragPos(event); }, false);
+            wrapper.addEventListener("touchend", function () { console.log("body touchend"); }, false);
+
+            alert(wrapper.offsetWidth+"   "+wrapper.offsetHeight);
+        };
+
+        function dragPos(event) {
+            var touch = event.targetTouches[0], x = touch.pageX, y = touch.pageY;
+            var posX, posY;
+            if (event.x != undefined && event.y != undefined) {
+                posX = x;
+                posY = y;
+            } else {
+                posX = x + document.body.scrollLeft + document.documentElement.scrollLeft;
+                posY = y + document.body.scrollTop + document.documentElement.scrollTop;
+            }
+            //posx -= self.canvas.offsetLeft;
+            console.log("dragEvent  posx=" + posX + "   posY=" + posY);
+            document.getElementById("wrapper").innerHTML = "dragEvent  posx=" + posX + "   posY=" + posY;
+        };
+    </script>
+</head>
+<body>
+    <div id="wrapper">This is a container.</div>
+</body>
+</html>

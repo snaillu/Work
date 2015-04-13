@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Test page</title>
+    <link rel="stylesheet" type="text/css" href="css/canvas.css" />
+
+</head>
+<body>
+    <div id="container">
+        <canvas id="canvas" width="900" height="400"></canvas>
+    </div>
+</body>
+    <script type="text/javascript">
+        var canvas = document.getElementById("canvas"),
+            context = canvas.getContext("2d");
+        window.onload = function () {
+            //drawCircle();
+            drawGradient();
+        };
+
+        //draw a circle
+        function drawCircle() {
+            var radius = 10;
+            context.beginPath();
+            //context.translate(100,100);
+            //context.arc(0, 0, 10, 0, 2 * Math.PI, false);
+            context.arc(200, 150, 100, 0, Math.PI * 2, true);
+            context.closePath();
+            context.fillStyle = "orange";
+            context.fill();
+        }
+
+        function drawGradient() {
+            var gradient = context.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, "#ffffff");
+            gradient.addColorStop(1, "#0000ff");
+            context.fillStyle = gradient;
+            context.fillRect(0, 0, canvas.width, canvas.height);
+
+            var radialGradient = context.createRadialGradient(450, 300, 20, 450, 300, 60);
+            radialGradient.addColorStop(0, "#ffffff");
+            radialGradient.addColorStop(1, "green");
+            context.fillStyle = radialGradient;
+            context.arc(450, 300, 50, 0, 2 * Math.PI, true);
+            context.fill();
+
+            context.fillStyle = "red";
+            context.font = "15px Verdana";
+            context.fillText("asdf", 400, 400);
+            //context.fill();
+        }
+    </script>
+</html>

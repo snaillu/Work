@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        div{
+            width: 300px;height: 300px;
+            position: absolute;
+            top: 20%;left:40%;
+            background-color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+<canvas id="dragBall" width="500" height="250"
+        style="border:2px solid black; position:absolute;
+            left:auto; top:auto; z-index: 2">
+</canvas>
+<!--<canvas id="dragBackground" width="500" height="250"
+        style="border:2px solid black; position:absolute;
+            left:auto; top:auto; z-index: 1">
+    Your browser doesn’t currently support HTML5 Canvas.
+</canvas>-->
+
+<div id="dragDiv">Drag Me</div>
+<br>
+
+<input type="range">
+<script>
+    var radius = 20;
+    var dragMouse = 0;
+    var ballXCur = 20;
+    var ballYCur = 20;
+    var xVectorCur = 25;
+    var yVectorCur = 10;
+    var startAngle = (Math.PI / 180) * 0;
+    var endAngle = (Math.PI / 180) * 360;
+    var canvasBall, contextBall;
+    var canvasBackground, contextBackground;
+    window.addEventListener('load', function () {
+        canvasBall = document.querySelector('#dragBall');
+        //canvasBackground = document.querySelector('#dragBackground');
+
+        contextBall = canvasBall.getContext('2d');
+        //contextBackground = canvasBackground.getContext('2d');
+
+        
+        canvasBall.addEventListener("touchstart",
+                mouseDown, false
+        );
+        canvasBall.addEventListener("touchmove",
+                mouseMove, false
+        );
+        canvasBall.addEventListener("touchend",
+                mouseUp, false
+        );
+        bouncingBall(ballXCur, ballYCur, xVectorCur, yVectorCur);
+    }, true);
+
+
+    function mouseDown(event) {
+	
+        mouseEvent(event);
+        dragMouse = 1;
+        contextBall.clearRect(0, 0, canvasBall.width, canvasBall.height);
+        contextBall.beginPath();
+        contextBall.arc(ballXCur, ballYCur, radius, startAngle, endAngle, true);
+        contextBall.closePath();
+        contextBall.fill();
+    }
+
+    function mouseMove(event) {
+        if (dragMouse == 1) {
+            mouseEvent(event);
+            contextBall.clearRect(0, 0, canvasBall.width, canvasBall.height);
+            contextBall.beginPath();
+            contextBall.arc(ballXCur, ballYCur, radius, startAngle, endAngle, true);
+            contextBall.closePath();
+            contextBall.fill();
+        }
+    }
+
+    function mouseUp(event) {
+        mouseEvent(event);
+        dragMouse = 0;
+    }
+
+    function mouseEvent(event) {
+		var touch = event.targetTouches[0];
+		var pointX = touch.pageX,
+			pointY = touch.pageY;
+        if (event.x != undefined && event.y != undefined) {
+            ballXCur = pointX;
+            ballYCur = pointY;
+        }
+        else {
+            ballXCur = pointX + document.body.scrollLeft +
+            document.documentElement.scrollLeft;
+            ballYCur = pointY + document.body.scrollTop +
+            document.documentElement.scrollTop;
+        }
+        ballXCur -= canvasBall.offsetLeft;
+        ballYCur -= canvasBall.offsetTop;
+    }
+
+    function bouncingBall(ballX, ballY, xVector, yVector) {
+        contextBall.shadowOffsetX = 3;
+        contextBall.shadowOffsetY = 3;
+        contextBall.shadowBlur = 5;
+        contextBall.shadowColor = "gray";
+        contextBall.fillStyle = "gold";
+        function drawBall() {
+            contextBall.clearRect(0, 0, canvasBall.width, canvasBall.height);
+            contextBall.beginPath();
+            contextBall.arc(ballX, ballY, radius, startAngle, endAngle, true);
+            contextBall.closePath();
+            contextBall.fill();
+            if (ballX < radius || ballX > canvasBall.width - radius) {
+                xVector *= -1 * (1 - damping)
+            }
+            if (ballY < radius || ballY > canvasBall.height - radius) {
+                yVector *= -1 * (1 - damping);
+                if ((yVector < 0) && (yVector < -gravityL)) {
+                    yVector += gravityL
+                }
+            }
+        }
+        drawBall();
+    }
+</script>
+</body>
+</html>

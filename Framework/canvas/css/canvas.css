@@ -1,0 +1,16 @@
+﻿html,body {padding:0;margin:0;background-color:black;font-family:微软雅黑,'Microsoft YaHei'}
+/* 设置滚动条的样式 */
+::-webkit-scrollbar {width: 10px;height:5px;}
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {width:10px;}
+
+.timeline-wrapper{width:1800px;height:300px;margin:0 auto;background-color:white;margin-top:100px;}
+.timeline-date{width:10%;height:100%;float:left;text-align:center;color:#4DA6F6;font-size:22px;}
+.timeline-container{width:90%;height:100%;float:left;overflow-y:hidden;position:relative;}
+.timeline-btns{width:100%;z-index:100;position:fixed;}
+.timeline-btn{width:322px;height:70px;float:left;border:1px solid #E4EBEE;line-height:70px;text-align:center;}
+.timeline-noleft{border-left:0px;}
+.timeline-tips{height:30px;position:fixed;z-index:100;}
+
+.flickable{background-color:white;height:100%;position:absolute;}
+.flickable canvas{position:absolute;left:0;top:0;}

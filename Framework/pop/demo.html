@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Pop Win Demo</title>
+    <style type="text/css">
+        #container{width:900px;height:auto;margin:0 auto;background-color:#F6F6F6;border:1px solid gray;padding:15px;margin-top:60px;margin-bottom:60px;}
+        ul,li{list-style:none;padding:0;margin:0;}
+        h1{text-align:center;color:blue;}
+        #confirm_param,#confirm_use,#tips_param,#tips_use,#iframe_param,#iframe_use,#html_param,#html_use{margin-left:25px;}
+    </style>
+    <script type="text/javascript" src="jquery-2.1.3.js"></script>
+    <script type="text/javascript" src="pop.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#alert").click(function () {
+                layer.alert("O(∩_∩)O哈哈~，我是一个弹出框.");
+            });
+
+            $("#confirm").click(function () {
+                layer.confirm({
+                    btns: 1,
+                    msg: "这个是一个确认提示框。当然我可以显示的信息是很多的，也可以设置我的按钮个数等等。详细参考参数说明。",
+                    yes: function () {
+                            alert("你点击了确定。");
+                        }
+                });
+            });
+
+            $("#tips").click(function () {
+                layer.tips({
+                    msg: "我是一个消息提示框，一般用在错误或者其他的一些提示信息什么.",
+                    position: { align: "center" },
+                    time: 3
+                });
+            });
+
+            $("#iframe").click(function () {
+                layer.iframe({
+                    mask: true,
+                    src: "http://www.baidu.com",
+                    area: ["910", "600"],
+                    time: 0,
+                    maskclose:true
+                });
+            });
+
+            $("#html").click(function () {
+                layer.html({
+                    html: $("#hidden_info").show(),
+                    time:3
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <div id="container">
+        <h1>The Demo of Pop.js</h1>
+        <ul>
+            <li>
+                <h3>1.Alert</h3>
+                <div>描述：提出框，提供一个msg参数用于显示需要提示的信息。</div>
+                <div>参数：msg:""  需要显示的信息</div>
+                <div>用法：layer.alert("提示消息");</div>
+                <div>点击查看效果：<input id="alert" type="button" value="弹出框" /> </div>
+            </li>
+            <li>
+                <h3>2.Confirm</h3>
+                <div>描述：确认提示框，参数详见用法。</div>
+                <div>参数：{<br />
+                    <div id="confirm_param">
+                    shade:[0.3,"#000"]          遮罩层样式设置,分别为opacity:透明度,background-color:背景颜色<br />
+                    mask:true                   是否需要遮罩,默认为true需要遮罩<br />
+                    area:["310px","auto"]       提示框的大小，auto为根据内容自适应<br />
+                    btns:1                      配置显示按钮的数量,0:不显示按钮   1:显示一个确定按钮  2:显示一个确定按钮和取消按钮<br />
+                    msg:""                      提示框需要显示的信息<br />
+                    yes:function(){}            点击确定后的回调<br />
+                    no:function(){}             点击取消后的回调<br />
+                    </div>
+                    }</div>
+                <div>用法：layer.confirm({
+                        <div id="confirm_use">
+                            btns: 1,<br />
+                            msg: "这个是一个确认提示框。当然我可以显示的信息是很多的，也可以设置我的按钮个数等等。详细参考参数说明。",<br />
+                            yes: function () {<br />
+                                alert("你点击了确定。");<br />
+                            }
+                        </div>
+                    });</div>
+                <div>点击查看效果：<input id="confirm" type="button" value="确认框" /></div>
+            </li>
+            <li>
+                <h3>3.Tips</h3>
+                <div>描述：信息提示框</div>
+                <div>参数：{
+                        <div id="tips_param">
+                            msg:""                                      需要提示的信息<br />
+                            time:3                                      自动延时关闭,单位为秒,0为不自动关闭<br />
+                            position:{left:0,top:0,align:"center"}      消息提示框的位置,若设置了left或top则根据设置的值进行展示，否则center:代表居中  rightbottom:右下角<br />
+                        </div>
+                    }</div>
+                <div>用法：layer.tips({
+                    <div id="tips_use">
+                        msg: "我是一个消息提示框，一般用在错误或者其他的一些提示信息什么.",<br />
+                        position: {align:"center" },<br />
+                        time:3<br />
+                    </div>
+                    });</div>
+                <div>点击查看效果：<input id="tips" type="button" value="消息框" /></div>
+            </li>
+            <li>
+                <h3>4.Iframe</h3>
+                <div>描述：iframe弹出窗</div>
+                <div>参数：{
+                    <div id="iframe_param">
+                        mask: true,                         是否需要遮罩,默认为true需要遮罩<br />
+                        src: "http://www.baidu.com",        需要加载的URI<br />
+                        area: ["910", "600"]                弹出窗的大小，分别为width和height
+                    </div>
+                    }</div>
+                <div>用法：layer.iframe({
+                    <div id="iframe_use">
+                        mask: true,<br />
+                        src: "http://www.baidu.com",<br />
+                        area: ["910", "600"]<br />
+                    </div>
+                    });</div>
+                <div>点击查看效果：<input id="iframe" type="button" value="iframe层" /></div>
+            </li>
+            <li>
+                <h3>5.Html</h3>
+                <div>描述：html弹出窗</div>
+                <div>参数：{
+                    <div id="html_param">
+                        html:""                             需要展示的html信息或dom<br />
+                    </div>
+                    }</div>
+                <div>用法：layer.html({
+                    <div id="html_use">
+                        html:$("#hidden_info").show()
+                    </div>
+                    });</div>
+                <div>点击查看效果：<input id="html" type="button" value="html层" /></div>
+            </li>
+        </ul>
+    </div>
+    
+    <div id="hidden_info" style="display:none;">
+        <h1>这是一个h1</h1><br />
+        <input type="button" value="我是一个按钮" />
+        <div>我是一个div我可以展示很多内容.</div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <style type="text/css">
+        #container{height:150px;width:500px;overflow:auto;}
+        #cnt{height:120px;width:4000px;}
+    </style>
+    <script type="text/javascript">
+        function test() {
+            console.log("1221111111111111111111111");
+        }
+        window.onload = function () {
+            document.body.innerHTML = "<div  id='container'><div id='cnt'>121212ssssssssssssssssssssssssss</div></div>";
+            var container = document.getElementById("container");
+            container.onscroll = function () {
+                console.log("scrollHeight="+container.scrollLeft);
+            };
+        };
+    </script>
+</head>
+<body>
+    <!--<div id="container">
+        <div id="cnt">121212ssssssssssssssssssssssssss</div>
+    </div>-->
+</body>
+</html>
