@@ -33,13 +33,13 @@
         seconds: 0,//the start position of the progress bar
         dragging: false,//the drag status of progress bar
         moving: false,//the move status of progress bar
-        timeout: 5,//on operate on timeline will move the the progress bar
+        timeout: 50,//on operate on timeline will move the the progress bar
         freetime: 0,//no operate time
         looping: false,//is in loop play mode
         loopstatus:"",//start:loop status    stop:stop loop play
         loop:{left:0,right:0},//loop area, left:start position   right:end position
         render: "",//the container of time line
-        scale:1.1
+        scale:1.2
     };
 
     //create the container of timeline
@@ -67,7 +67,6 @@
         self.init();
         self.container();
         $("#flickable" + self.index).css({ width: (self.totalhour * config.width*config.scale) });
-
         self.flickable = document.getElementById("flickable" + self.index);
         self.canvas = document.getElementById("canvas" + self.index);
         self.context = self.canvas.getContext("2d");
@@ -76,13 +75,29 @@
         self.callback();
     };
 
+    //inti canvas width and height
+    Line.pt.init = function () {
+        this.initFileInfo();
+
+        var self = this, config = self.config, filelist = config.filelist;
+        var renderTo = typeof config.render == "string" ? $("#" + config.render) : config.render;
+        //self.wrapper = wrapper;
+        self.renderto = renderTo;
+        self.begintime = filelist[0].begintime;
+        self.endtime = filelist[filelist.length - 1].endtime;
+        self.totalhour = (self.endtime - self.begintime) / (1000 * 3600);
+        //console.log("init   totalhour=" + self.totalhour + "   filelist=" + filelist.length);
+        self.canvaswidth = Math.min(config.maxwidth* config.scale, (self.totalhour * config.width * config.scale));
+        self.canvasheight = renderTo.height();
+    };
+
     //call back for create the container
     Line.pt.callback = function () {
         var self = this, config = self.config;
         self.wrapper.scroll(function () {
             clearTimeout(self.scrolling);
             self.scrolling = setTimeout(function () {
-                //console.log("scrollLeft=" + self.wrapper.scrollLeft());
+                console.log("scrollLeft=" + self.wrapper.scrollLeft());
                 self.moveCanvasPos(self.wrapper.scrollLeft());
             }, 200);
         });
@@ -100,7 +115,7 @@
     Line.pt.moveCanvasPos = function (scrollLeft) {
         var self = this, config = self.config;
         var contentWidth = self.totalhour * config.width*config.scale;
-        if (self.canvaswidth < config.maxwidth)
+        if (self.canvaswidth < config.maxwidth*config.scale)
             return;
         var border = (config.maxwidth - $(self.wrapper).width()) / 2, left = 0;
         if (scrollLeft >= border) {
@@ -109,7 +124,7 @@
         left = Math.min(left, contentWidth - self.canvaswidth);
         $(self.canvas).css({ left: left });
         config.left = left;
-        //console.log("scrollLeft=" + scrollLeft + "   left=" + left);
+        console.log("scrollLeft=" + scrollLeft + "   left=" + left + "   border=" + border);
         self.draw();
     };
 
@@ -145,21 +160,6 @@
     //check the time is equal with the deviation of 5
     Line.pt.equals = function (time1,time2) {
         return Math.abs(time1 - time2) <= 5;
-    };
-
-    //inti canvas width and height
-    Line.pt.init = function () {
-        this.initFileInfo();
-
-        var self = this, config = self.config, filelist = config.filelist;
-        var renderTo = typeof config.render == "string" ? $("#" + config.render) : config.render;
-        //self.wrapper = wrapper;
-        self.renderto = renderTo;
-        self.begintime = filelist[0].begintime;
-        self.endtime = filelist[filelist.length - 1].endtime;
-        self.totalhour = (self.endtime - self.begintime) / (1000 * 3600)
-        self.canvaswidth = Math.min(config.maxwidth, (self.totalhour * config.width));
-        self.canvasheight = renderTo.height();
     };
 
     //move the progress button
@@ -228,7 +228,6 @@
         var self = this, config = self.config;
         var progressX = config.width * config.seconds / 3600, touchX = self.getTouchPosition(event) +
             self.wrapper.scrollLeft() - $(self.wrapper).offset().left;
-        //console.log("touchStart touchX=" + touchX + "   $(self.wrapper).offset().left=" + $(self.wrapper).offset().left);
         config.touchX = touchX;
         config.freetime = 0;
         //console.log("touchX=" + touchX);
@@ -281,7 +280,6 @@
     //handle the touch end event
     Line.pt.touchEnd = function (event) {
         var self = this, config = self.config;
-        console.log("");
         if (!config.moving) {
             config.seconds = config.touchX * 3600 / config.width;
             self.draw();
@@ -307,14 +305,15 @@
         var self = this, config = self.config, ctx = self.context, bgColor = "#F5F9FA";
         ctx.clearRect(0, 0, self.canvaswidth, self.canvasheight);
 
+        console.log("self.canvaswidth=" + self.canvaswidth);
         ctx.fillStyle = bgColor;
         ctx.fillRect(0, config.startY, self.canvaswidth, config.height * 2);
 
-        ctx.strokeStyle = "#d7d7d7";
-        ctx.beginPath();
-        ctx.rect(0, config.startY, self.canvaswidth, config.height);
-        ctx.rect(0, config.startY + config.height, self.canvaswidth, config.height);
-        ctx.stroke();
+        //ctx.strokeStyle = "#d7d7d7";
+        //ctx.beginPath();
+        //ctx.rect(0, config.startY, self.canvaswidth, config.height);
+        //ctx.rect(0, config.startY + config.height, self.canvaswidth, config.height);
+        //ctx.stroke();
     };
 
     //draw the tips of file status
@@ -425,7 +424,7 @@
         for (var i = filePos.startindex; i <= filePos.endindex; i++) {
             var file = filelist[i], color = "black",startX=config.width*(file.begintime-startTime)/(3600*1000)-config.left,
                 width = (file.endtime - file.begintime) / (3600 * 1000) * config.width;
-            
+            //console.log("drawFileInfo    startX=" + startX + "   width=" + width + "   index=" + i + "   file.begintime=" + file.begintime + "   startTime=" + startTime);
             if (file.downloadstatus == 1) {
                 self.drawFileProgress("download", file, startX, width);
             } else {
@@ -434,6 +433,7 @@
                 ctx.fillStyle = color;
                 ctx.fillRect(startX, config.startY, width, config.height);
             }
+            //console.log("drawFileInfo   startX=" + startX + "    width=" + width);
 
             if (file.absstatus == 1) {
                 self.drawFileProgress("abs", file, startX, width);
@@ -469,7 +469,7 @@
     Line.pt.drawProgressBar = function () {
         var self = this, config = self.config, ctx = self.context, startX = Math.max(config.width * config.seconds / 3600,config.height/2)-config.left,
             strokeColor = "#60BBFF";
-        startX = Math.min(startX, (self.totalhour * config.width - config.height / 2 - config.left));
+        startX = Math.min(startX, (self.totalhour * config.width*config.scale - config.height / 2 - config.left));
         startX = startX / config.scale;
         ctx.strokeStyle = strokeColor;
         ctx.beginPath();
@@ -557,7 +557,7 @@
         }
         ctx.beginPath();
         ctx.fillStyle = "rgba(10,10,10,0.5)";
-        ctx.fillRect(loop.left-config.left, config.startY, (loop.right - loop.left), config.height * 2);
+        ctx.fillRect((loop.left-config.left)/config.scale, config.startY, (loop.right - loop.left)/config.scale, config.height * 2);
         ctx.fill();
         ctx.closePath();
         self.drawLoopBtn("left", loop.left - config.left);
@@ -565,9 +565,10 @@
     };
 
     //draw loop bar with the params direction and startX
-    Line.pt.drawLoopBtn = function (direction,startX) {
+    Line.pt.drawLoopBtn = function (direction, startX) {
         var self = this, config = self.config, ctx = self.context;
-        var radiusY = config.startY + config.height, strokeColor = "#60BBFF", radius = config.height / 3,trigle=10;
+        var radiusY = config.startY + config.height, strokeColor = "#60BBFF", radius = config.height / 3, trigle = 10;
+        startX = startX / config.scale;
         ctx.strokeStyle = strokeColor;
         ctx.beginPath();
         ctx.moveTo(startX, config.startY);
@@ -719,10 +720,7 @@
     //generate test data
     var generateData = function (hours) {
         var totalHour = hours || 24,duration = 60;
-        var end = new Date(), start = new Date(end.getTime() - 24 * 3600 * 1000);
-        end.setMinutes(0);
-        end.setSeconds(0);
-        start = new Date(end.getTime() - 24 * 3600 * 1000)
+        var end = new Date(), start = new Date(end.getTime() - totalHour * 3600 * 1000);
         var fileList = new Array(), item = {};
 
         for (var i = 0; i < totalHour * 60 / duration; i++) {
@@ -740,7 +738,8 @@
         }
 
         //console.log("generateData file count=" + fileList.length);
-        var removeCount = Math.min(fileList.length/8,5);
+        var removeCount = Math.min(fileList.length / 8, 5);
+        removeCount = 0;
         for (var i = 0; i < removeCount; i++) {
             var index = Math.floor(Math.random() * fileList.length);
             fileList.splice(index,1);
