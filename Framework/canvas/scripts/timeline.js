@@ -24,6 +24,7 @@
 
     Line.pt.config = {
         filelist: [],//the file data for time line
+        scale:1,//set the scale size
         height: 36,//column height
         width: 100,//hour width
         startY: 120,//the start position of timeline
@@ -33,13 +34,12 @@
         seconds: 0,//the start position of the progress bar
         dragging: false,//the drag status of progress bar
         moving: false,//the move status of progress bar
-        timeout: 50,//on operate on timeline will move the the progress bar
+        timeout: 5,//on operate on timeline will move the the progress bar
         freetime: 0,//no operate time
         looping: false,//is in loop play mode
         loopstatus:"",//start:loop status    stop:stop loop play
         loop:{left:0,right:0},//loop area, left:start position   right:end position
         render: "",//the container of time line
-        scale:1.2
     };
 
     //create the container of timeline
@@ -66,11 +66,10 @@
         var self = this, config = self.config;
         self.init();
         self.container();
-        $("#flickable" + self.index).css({ width: (self.totalhour * config.width*config.scale) });
+        $("#flickable" + self.index).css({ width: (self.totalhour * config.width) });
         self.flickable = document.getElementById("flickable" + self.index);
         self.canvas = document.getElementById("canvas" + self.index);
         self.context = self.canvas.getContext("2d");
-        self.context.scale(config.scale, config.scale);
         
         self.callback();
     };
@@ -81,13 +80,13 @@
 
         var self = this, config = self.config, filelist = config.filelist;
         var renderTo = typeof config.render == "string" ? $("#" + config.render) : config.render;
-        //self.wrapper = wrapper;
+
+        config.width = config.width * config.scale;
         self.renderto = renderTo;
         self.begintime = filelist[0].begintime;
         self.endtime = filelist[filelist.length - 1].endtime;
         self.totalhour = (self.endtime - self.begintime) / (1000 * 3600);
-        //console.log("init   totalhour=" + self.totalhour + "   filelist=" + filelist.length);
-        self.canvaswidth = Math.min(config.maxwidth* config.scale, (self.totalhour * config.width * config.scale));
+        self.canvaswidth = Math.min(config.maxwidth, (self.totalhour * config.width));
         self.canvasheight = renderTo.height();
     };
 
@@ -97,7 +96,6 @@
         self.wrapper.scroll(function () {
             clearTimeout(self.scrolling);
             self.scrolling = setTimeout(function () {
-                console.log("scrollLeft=" + self.wrapper.scrollLeft());
                 self.moveCanvasPos(self.wrapper.scrollLeft());
             }, 200);
         });
@@ -114,8 +112,8 @@
     //while scrollLeft need to reset the canvas position
     Line.pt.moveCanvasPos = function (scrollLeft) {
         var self = this, config = self.config;
-        var contentWidth = self.totalhour * config.width*config.scale;
-        if (self.canvaswidth < config.maxwidth*config.scale)
+        var contentWidth = self.totalhour * config.width;
+        if (self.canvaswidth < config.maxwidth)
             return;
         var border = (config.maxwidth - $(self.wrapper).width()) / 2, left = 0;
         if (scrollLeft >= border) {
@@ -124,7 +122,7 @@
         left = Math.min(left, contentWidth - self.canvaswidth);
         $(self.canvas).css({ left: left });
         config.left = left;
-        console.log("scrollLeft=" + scrollLeft + "   left=" + left + "   border=" + border);
+        //console.log("scrollLeft=" + scrollLeft + "   left=" + left + "   border=" + border);
         self.draw();
     };
 
@@ -305,21 +303,20 @@
         var self = this, config = self.config, ctx = self.context, bgColor = "#F5F9FA";
         ctx.clearRect(0, 0, self.canvaswidth, self.canvasheight);
 
-        console.log("self.canvaswidth=" + self.canvaswidth);
         ctx.fillStyle = bgColor;
         ctx.fillRect(0, config.startY, self.canvaswidth, config.height * 2);
 
-        //ctx.strokeStyle = "#d7d7d7";
-        //ctx.beginPath();
-        //ctx.rect(0, config.startY, self.canvaswidth, config.height);
-        //ctx.rect(0, config.startY + config.height, self.canvaswidth, config.height);
-        //ctx.stroke();
+        ctx.strokeStyle = "#d7d7d7";
+        ctx.beginPath();
+        ctx.rect(0, config.startY, self.canvaswidth, config.height);
+        ctx.rect(0, config.startY + config.height, self.canvaswidth, config.height);
+        ctx.stroke();
     };
 
     //draw the tips of file status
     Line.pt.drawTips = function () {
         var self = this, config = self.config, ctx = self.context;
-        var width = 25, height = 10, startX = self.wrapper.scrollLeft() - config.left, spacing = 15, startY = (self.canvasheight - 3 * height)/config.scale;
+        var width = 25 * config.scale, height = 10 * config.scale, startX = self.wrapper.scrollLeft() - config.left, spacing = 15 * config.scale, startY = self.canvasheight - 3 * height;
         var tips = [{ border: "#7ED1FA", fill: "#C2E7F7", text: "有录像" },
                     { border: "#A0AAAE", fill: "#D8D8D8", text: "查询无录像" },
                     { border: "#C63956", fill: "#F46180", text: "下载失败" },
@@ -330,7 +327,7 @@
         for (var i = 0; i < tips.length; i++) {
             var tip=tips[i];
             if (i > 0) {
-                startX += tips[i - 1].text.length * 20 + spacing * 4 + width;
+                startX += tips[i - 1].text.length * 20*config.scale + spacing * 4 + width;
             }
             tip.startX = startX;
             tip.startY = startY;
@@ -340,11 +337,11 @@
 
     //draw tip item by tips info
     Line.pt.drawTipItem = function (info,width,height,spacing) {
-        var self = this, config = self.config, ctx = self.context;
+        var self = this, config = self.config, ctx = self.context,fontSize=22*config.scale;
         ctx.fillStyle = info.fill;
         ctx.fillRect(info.startX, info.startY, width, height);
         ctx.fillStyle = "#CBD2D8";
-        ctx.font = "22px 微软雅黑";
+        ctx.font = fontSize + "px 微软雅黑";
         ctx.fillText(info.text, info.startX + width + spacing, info.startY + height);
         ctx.beginPath();
         ctx.strokeStyle = info.border;
@@ -356,7 +353,7 @@
     //draw the files time info
     Line.pt.drawTimeLine = function () {
         var self = this, config = self.config,ctx = self.context;
-        var filePos = self.getDrawFile();
+        var filePos = self.getDrawFile(),fontSize = 14*config.scale;
         //console.log("drawTimeLine filePos="+JSON.stringify(filePos));
 
         ctx.strokeStyle = "#3BA8FB";
@@ -386,7 +383,7 @@
 
                 ctx.save();
                 ctx.fillStyle = "#828282";
-                ctx.font = "14px 微软雅黑";
+                ctx.font = fontSize+"px 微软雅黑";
                 //draw hour info at the line top
                 ctx.fillText(hours + self.getNoonDes(hours), curPos - shifting, config.startY - textHeight);
                 if (hours == 0) {
@@ -469,8 +466,7 @@
     Line.pt.drawProgressBar = function () {
         var self = this, config = self.config, ctx = self.context, startX = Math.max(config.width * config.seconds / 3600,config.height/2)-config.left,
             strokeColor = "#60BBFF";
-        startX = Math.min(startX, (self.totalhour * config.width*config.scale - config.height / 2 - config.left));
-        startX = startX / config.scale;
+        startX = Math.min(startX, (self.totalhour * config.width - config.height / 2 - config.left));
         ctx.strokeStyle = strokeColor;
         ctx.beginPath();
         ctx.moveTo(startX, config.startY);
@@ -557,7 +553,7 @@
         }
         ctx.beginPath();
         ctx.fillStyle = "rgba(10,10,10,0.5)";
-        ctx.fillRect((loop.left-config.left)/config.scale, config.startY, (loop.right - loop.left)/config.scale, config.height * 2);
+        ctx.fillRect(loop.left-config.left, config.startY, loop.right - loop.left, config.height * 2);
         ctx.fill();
         ctx.closePath();
         self.drawLoopBtn("left", loop.left - config.left);
@@ -568,7 +564,6 @@
     Line.pt.drawLoopBtn = function (direction, startX) {
         var self = this, config = self.config, ctx = self.context;
         var radiusY = config.startY + config.height, strokeColor = "#60BBFF", radius = config.height / 3, trigle = 10;
-        startX = startX / config.scale;
         ctx.strokeStyle = strokeColor;
         ctx.beginPath();
         ctx.moveTo(startX, config.startY);
