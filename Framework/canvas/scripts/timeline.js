@@ -23,23 +23,25 @@
     Line.pt = Line.prototype;
 
     Line.pt.config = {
+        //params for timeline,they can change by create params,if you want to
         filelist: [],//the file data for time line
         scale:1,//set the scale size
         height: 36,//column height
         width: 100,//hour width
-        startY: 120,//the start position of timeline
-        left:0,//canvas left offset
+        startY: 100,//the start position of timeline
+        timeout: 5,//on operate on timeline will move the the progress bar
+        left: 0,//canvas left offset
+
+        //params for timeline inner use don't change them
         maxwidth:4000,//max width of canvas
         hour: 72,//file total hour
         seconds: 0,//the start position of the progress bar
         dragging: false,//the drag status of progress bar
         moving: false,//the move status of progress bar
-        timeout: 5,//on operate on timeline will move the the progress bar
         freetime: 0,//no operate time
         looping: false,//is in loop play mode
         loopstatus:"",//start:loop status    stop:stop loop play
         loop:{left:0,right:0},//loop area, left:start position   right:end position
-        render: "",//the container of time line
     };
 
     //create the container of timeline
@@ -47,9 +49,11 @@
         var self = this, config = self.config;
         var frames = "<div id='flickable" + self.index + "' class='flickable'><canvas id='canvas" +
             self.index + "' width='" + self.canvaswidth + "' height='" + self.canvasheight + "'></canvas></div>",
-            btns = '<div id="timeline-btns" class="timeline-btns"><div class="timeline-btn"></div><div id="loopstart" class="timeline-btn timeline-noleft">设开始</div>'
-            + '<div id="loopend" class="timeline-btn timeline-noleft">设结束</div><div id="loop" class="timeline-btn timeline-noleft">循环播放</div>' +
-            '<div class="timeline-btn">导出视频</div></div>',
+            btns = '<div id="timeline-btns" class="timeline-btns"><div class="timeline-empty-btn"></div>'
+            + '<div id="loopstart" class="timeline-btn"><div class="timeline-btn-center"><img class="timeline-icon" src="images/loopstart.png" />设开始</div></div>' +
+            '<div id="loopend" class="timeline-btn timeline-noleft"><div class="timeline-btn-center"><img class="timeline-icon" src="images/loopend.png" />设结束</div></div>' +
+            '<div id="loop" class="timeline-btn timeline-noleft"><div class="timeline-btn-center"><img class="timeline-icon" src="images/loopplay.png" />循环播放</div></div>' +
+            '<div class="timeline-btn timeline-noleft"><div class="timeline-btn-center"><img class="timeline-icon" src="images/export.png" />导出视频</div></div></div>',
             tips = '<div id="timeline-tips" class="timeline-tips"></div>',
             wrapper = '<div id="timeline-date" class="timeline-date" style="line-height:' + self.canvasheight +
             'px;"></div><div id="timeline-container" class="timeline-container">' + btns + tips + '</div>';
@@ -316,13 +320,14 @@
     //draw the tips of file status
     Line.pt.drawTips = function () {
         var self = this, config = self.config, ctx = self.context;
-        var width = 25 * config.scale, height = 10 * config.scale, startX = self.wrapper.scrollLeft() - config.left, spacing = 15 * config.scale, startY = self.canvasheight - 3 * height;
-        var tips = [{ border: "#7ED1FA", fill: "#C2E7F7", text: "有录像" },
-                    { border: "#A0AAAE", fill: "#D8D8D8", text: "查询无录像" },
-                    { border: "#C63956", fill: "#F46180", text: "下载失败" },
-                    { border: "#63BF7D", fill: "#D3ECDB", text: "有摘要" },
-                    { border: "#F29677", fill: "#F5DFD8", text: "有目标" },
-                    { border: "#62BF7D", fill: "#B6DFC4", text: "摘要中" }];
+        var width = 25 * config.scale, height = 10 * config.scale, startX = self.wrapper.scrollLeft() - config.left,
+            spacing = 15 * config.scale, startY = self.canvasheight - 3 * height;
+        var tips = [{ border: "#7ED1FA", fill: "#C2E7F7", text: "有录像"},
+                    { border: "#A0AAAE", fill: "#D8D8D8", text: "查询无录像"},
+                    { border: "#C63956", fill: "#F46180", text: "下载失败"},
+                    { border: "#63BF7D", fill: "#D3ECDB", text: "有摘要"},
+                    { border: "#F29677", fill: "#F5DFD8", text: "有目标"},
+                    { border: "#62BF7D", fill: "#B6DFC4", text: "摘要中"}];
         
         for (var i = 0; i < tips.length; i++) {
             var tip=tips[i];
@@ -421,7 +426,6 @@
         for (var i = filePos.startindex; i <= filePos.endindex; i++) {
             var file = filelist[i], color = "black",startX=config.width*(file.begintime-startTime)/(3600*1000)-config.left,
                 width = (file.endtime - file.begintime) / (3600 * 1000) * config.width;
-            //console.log("drawFileInfo    startX=" + startX + "   width=" + width + "   index=" + i + "   file.begintime=" + file.begintime + "   startTime=" + startTime);
             if (file.downloadstatus == 1) {
                 self.drawFileProgress("download", file, startX, width);
             } else {
@@ -504,7 +508,7 @@
             if (config.looping) {
                 config.seconds = loop.left * 3600 / config.width;
                 config.loopstatus = "start";
-                $("#loop").text("结束循环");
+                //$("#loop").text("结束循环");
             }
         } else {//end loop reset all flag
             loop.left = 0;
@@ -512,14 +516,16 @@
             config.loop = loop;
             config.looping = false;
             config.loopstatus = "stop";
-            $("#loop").text("循环播放");
+            //$("#loop").text("循环播放");
         }
         
     };
 
     //set the begin position of loop
     Line.pt.loopBegin = function (event) {
-        var self = this, config = self.config, ctx = self.context, startX = Math.max(config.width * config.seconds / 3600, config.height / 2),loop=config.loop;
+        var self = this, config = self.config, ctx = self.context,
+            startX = Math.max(config.width * config.seconds / 3600, config.height / 2), loop = config.loop;
+
         startX = Math.min(startX, (self.totalhour * config.width - config.height / 2));
         var pos = {};
         pos.left = startX;
@@ -533,7 +539,9 @@
 
     //set the end position of loop
     Line.pt.loopEnd = function (event) {
-        var self = this, config = self.config, ctx = self.context, startX = Math.max(config.width * config.seconds / 3600, config.height / 2), loop = config.loop;
+        var self = this, config = self.config, ctx = self.context,
+            startX = Math.max(config.width * config.seconds / 3600, config.height / 2), loop = config.loop;
+
         startX = Math.min(startX, (self.totalhour * config.width - config.height / 2));
         var pos = {};
         pos.left = loop.left;

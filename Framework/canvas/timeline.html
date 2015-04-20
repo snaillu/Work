@@ -12,17 +12,32 @@
             $.timeline({
                 render: $("#timeline-wrapper"),
                 hour: 48,
-                scale:1.5
+                scale:1
             });
         });
     </script>
+
+    <style type="text/css">
+        
+
+    </style>
 </head>
 <body>
     <div id="timeline-wrapper" class="timeline-wrapper">
-        <!--<div id="timeline-date" class="timeline-date">23日</div>
-        <div id="timeline-container" class="timeline-container">
-            <div id="timeline-btns"><div class="timeline-btn"></div><div class="timeline-btn timeline-noleft"></div><div class="timeline-btn timeline-noleft"></div></div>
-        </div>-->
     </div>
+
+    <!--<div id="timeline-wrapper" class="timeline-wrapper">
+        <div id="timeline-date" class="timeline-date" style="line-height:300px;">14日</div>
+        <div id="timeline-container" class="timeline-container">
+            <div id="timeline-btns" class="timeline-btns">
+                <div class="timeline-empty-btn"></div>
+                <div id="loopstart" class="timeline-btn"><div class="timeline-btn-center"><img class="timeline-icon" src="images/loopstart.png" />设开始</div></div>
+                <div id="loopend" class="timeline-btn timeline-noleft"><div class="timeline-btn-center"><img class="timeline-icon" src="images/loopend.png" />设结束</div></div>
+                <div id="loop" class="timeline-btn timeline-noleft"><div class="timeline-btn-center"><img class="timeline-icon" src="images/loopplay.png" />循环播放</div></div>
+                <div class="timeline-btn timeline-noleft"><div class="timeline-btn-center"><img class="timeline-icon" src="images/export.png" />导出视频</div></div>
+            </div>
+        <div id="timeline-tips" class="timeline-tips" style="margin-top: 270px;"></div><div id="flickable1" class="flickable" style="width: 7200px;"><canvas id="canvas1" width="4000" height="300"></canvas></div></div>
+    </div>-->
+
 </body>
 </html>

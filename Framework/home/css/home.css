@@ -1,0 +1,55 @@
+﻿/*整体架构布局*/
+.home_header{height:16%;flex-flow:column;}
+.wrapper{width:81.481481%;height:76%;flex-flow:column;margin:0 auto;}
+.home_footer{width:100%;background-color:#1F51A0;height:8%;flex-flow:column;}
+.header_wrapper{width:81.481481%;margin:0 auto;height:22.222222%;margin-top:2.5%;}
+.header_wrapper a{display:flex;align-items:center;vertical-align:middle;height:100%;font-size:0.8rem;color:white;float:right;margin-right:1rem;}
+.header_wrapper img{max-height:100%;}
+.header_wrapper .split{color:#1B478D;font-size:1.2rem;}
+
+.home_title{height:20%;text-align:center;font-size:2.69rem;color:white;display:flex;align-items:center;}
+.title_center{height:70%;margin:0 auto;display:flex;align-items:center;vertical-align:middle;}
+.home_title img{max-height:100%;vertical-align:middle;}
+
+/*中间内容区域*/
+.content{height:50%;}
+.content_item{width:20.454545%;height:100%;float:left;margin-right:2.045454%;}
+.content_item:last-child{width:32.5%;margin-right:0;}
+.content_item h2{font-size:1rem;color:white;font-weight:normal;padding-left:1rem;}
+.content_item_wrapper{width:100%;height:80%;display:flex;flex-flow:row wrap;}
+.category_item{height:47.222222%;width:47.222222%;background-color:#245AB2;margin-right:5.555555%;margin-bottom:5.555555%;}
+.content_item:last-child .category_item{width:29.720279%;margin-right:3.496503%;margin-bottom:3.496503%;}
+.little_width{width:33.566433% !important;margin-right:0 !important;}
+.more_width_last{width:62.937062% !important;}
+.more_width{width:100%;margin-right:0;}
+.category_item:last-child{margin-right:0;}
+.category_item{display:flex;align-items:center;}
+.category_item a{display:flex;align-items:center;vertical-align:middle;margin:0 auto;color:white;height:80%;flex-direction:column;}
+.category_item img{max-height:100%;vertical-align:middle;display:block;}
+.more_width a,.more_width_last a{flex-direction:row !important;height:60% !important;}
+.more_width img, .more_width_last img{padding-right:2rem;}
+
+/*模块区域按钮背景颜色*/
+.download{background-color:#3E9BFB;}
+.videoimport{background-color:#4273FC;}
+.poscollect{background-color:#3AAFC3;}
+
+.superplay{background-color:#4CB800;}
+.supercoder{background-color:#DB7D00;}
+
+.videoabstract{background-color:#4273FC;}
+.smartplay{background-color:#43C3EA;}
+.fourplay{background-color:#DCBF00;}
+
+.allenhance{background-color:#43C3EA;}
+.moreexposure{background-color:#DCBF00;}
+.poorexposure{background-color:#DB7D00;}
+.fuzzyprocess{background-color:#3E9BFB;}
+.defoghaze{background-color:#43C3EA;}
+
+.sub_content{height:30%;display:flex;align-items:center;}
+.sub_content_center{height:45%;margin:0 auto;}
+.sub_content_center a{display:flex;flex-direction:column;vertical-align:middle;align-items:center;height:95%;
+                      float:left;font-size:0.8rem;color:white;text-align:center;}
+.sub_content_center img{display:block;max-height:100%;}
+.sub_content_center a p{padding-top:0.6rem;color:#1B478D;}

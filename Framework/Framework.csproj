@@ -57,8 +57,61 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="angular\css\angular.css" />
+    <Content Include="angular\index.html" />
+    <Content Include="angular\scripts\angular.js" />
+    <Content Include="angular\scripts\angular.min.js" />
+    <Content Include="canvas\center.html" />
     <Content Include="canvas\css\canvas.css" />
     <Content Include="canvas\drawline.html" />
+    <Content Include="canvas\images\loopplay.png" />
+    <Content Include="canvas\images\loopplay_down.png" />
+    <Content Include="canvas\images\loopstart.png" />
+    <Content Include="canvas\images\loopstart_down.png" />
+    <Content Include="canvas\images\loopend.png" />
+    <Content Include="canvas\images\loopend_down.png" />
+    <Content Include="canvas\images\export.png" />
+    <Content Include="canvas\images\export_down.png" />
+    <Content Include="css\common.css" />
+    <Content Include="home\css\home.css" />
+    <Content Include="home\home.html" />
+    <Content Include="home\images\02.png" />
+    <Content Include="home\images\01.png" />
+    <Content Include="home\images\poorexposure.png" />
+    <Content Include="home\images\poorexposure_down.png" />
+    <Content Include="home\images\fuzzyprocess.png" />
+    <Content Include="home\images\fuzzyprocess_down.png" />
+    <Content Include="home\images\defoghaze.png" />
+    <Content Include="home\images\defoghaze_down.png" />
+    <Content Include="home\images\allenhance.png" />
+    <Content Include="home\images\allenhance_down.png" />
+    <Content Include="home\images\moreexposure.png" />
+    <Content Include="home\images\moreexposure_down.png" />
+    <Content Include="home\images\fourplay.png" />
+    <Content Include="home\images\fourplay_down.png" />
+    <Content Include="home\images\smartplay.png" />
+    <Content Include="home\images\smartplay_down.png" />
+    <Content Include="home\images\videoabstract.png" />
+    <Content Include="home\images\videoabstract_down.png" />
+    <Content Include="home\images\supercoder.png" />
+    <Content Include="home\images\supercoder_down.png" />
+    <Content Include="home\images\superplay.png" />
+    <Content Include="home\images\superplay_down.png" />
+    <Content Include="home\images\poscollect.png" />
+    <Content Include="home\images\poscollect_down.png" />
+    <Content Include="home\images\videoimport.png" />
+    <Content Include="home\images\videoimport_down.png" />
+    <Content Include="home\images\download.png" />
+    <Content Include="home\images\download_down.png" />
+    <Content Include="home\images\logo.png" />
+    <Content Include="home\images\close.png" />
+    <Content Include="home\images\close_down.png" />
+    <Content Include="home\images\backgroundtask.png" />
+    <Content Include="home\images\backgroundtask_down.png" />
+    <Content Include="home\images\minimize.png" />
+    <Content Include="home\images\minimize_down.png" />
+    <Content Include="home\images\setting.png" />
+    <Content Include="home\images\setting_down.png" />
     <Content Include="test\dragAndDrop.html" />
     <Content Include="test\dragAndDrop2.html" />
     <Content Include="test\index.html" />
@@ -95,7 +148,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="css\" />
+    <Folder Include="common\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

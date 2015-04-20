@@ -1,0 +1,29 @@
+﻿html,body{padding:0;margin:0;width:100%;height:100%;background-color:#245AB2;flex-flow:column;display:flex;font-family:'Microsoft YaHei';}
+
+/* css注释：设置了浏览器宽度不小于1501px时 */
+@media screen and (min-width: 1501px) {
+    html, body {
+        font: 20px "Microsoft YaHei", 微软雅黑;
+    }
+}
+
+/* 设置了浏览器宽度不大于1500px时 */
+@media screen and (max-width: 1500px) {
+    html, body {
+        font: 16px "Microsoft YaHei", 微软雅黑;
+    }
+}
+
+/* 设置了浏览器宽度不大于1200px时 */
+@media screen and (max-width: 1200px) {
+    html, body {
+        font: 11px "Microsoft YaHei", 微软雅黑;
+    }
+}
+
+/* 设置了浏览器宽度不大于901px时 */
+@media screen and (max-width: 901px) {
+    html, body {
+        font: 9px "Microsoft YaHei", 微软雅黑;
+    }
+}
