@@ -1,9 +1,10 @@
 ﻿/*整体架构布局*/
-.home_header{height:16%;flex-flow:column;}
-.wrapper{width:81.481481%;height:76%;flex-flow:column;margin:0 auto;}
-.home_footer{width:100%;background-color:#1F51A0;height:8%;flex-flow:column;}
-.header_wrapper{width:81.481481%;margin:0 auto;height:22.222222%;margin-top:2.5%;}
-.header_wrapper a{display:flex;align-items:center;vertical-align:middle;height:100%;font-size:0.8rem;color:white;float:right;margin-right:1rem;}
+.home{background-color:#245AB2;padding-top:2.5%;}
+.home_header{height:16%;}
+.wrapper{width:81.481481%;height:76%;flex-flow:column;margin:0 auto;background-color:#245AB2;}
+.home_footer{width:100%;background-color:#1F51A0;height:8%;}
+.header_wrapper{width:81.481481%;margin:0 auto;height:27.222222%;}
+.header_wrapper a{display:flex;align-items:center;vertical-align:middle;height:100%;font-size:0.8rem;color:white;float:right;margin-right:1rem;text-decoration:none;}
 .header_wrapper img{max-height:100%;}
 .header_wrapper .split{color:#1B478D;font-size:1.2rem;}
 
@@ -23,8 +24,9 @@
 .more_width_last{width:62.937062% !important;}
 .more_width{width:100%;margin-right:0;}
 .category_item:last-child{margin-right:0;}
-.category_item{display:flex;align-items:center;}
-.category_item a{display:flex;align-items:center;vertical-align:middle;margin:0 auto;color:white;height:80%;flex-direction:column;}
+.category_item{display:flex;align-items:center;cursor:pointer;}
+.category_item:active{opacity:0.5;}
+.category_item a{display:flex;align-items:center;vertical-align:middle;margin:0 auto;color:white;height:80%;flex-direction:column;text-decoration:none;}
 .category_item img{max-height:100%;vertical-align:middle;display:block;}
 .more_width a,.more_width_last a{flex-direction:row !important;height:60% !important;}
 .more_width img, .more_width_last img{padding-right:2rem;}
@@ -50,6 +52,6 @@
 .sub_content{height:30%;display:flex;align-items:center;}
 .sub_content_center{height:45%;margin:0 auto;}
 .sub_content_center a{display:flex;flex-direction:column;vertical-align:middle;align-items:center;height:95%;
-                      float:left;font-size:0.8rem;color:white;text-align:center;}
+                      float:left;font-size:0.8rem;color:white;text-align:center;text-decoration:none;}
 .sub_content_center img{display:block;max-height:100%;}
 .sub_content_center a p{padding-top:0.6rem;color:#1B478D;}

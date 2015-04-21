@@ -112,7 +112,6 @@
     <Content Include="home\images\minimize_down.png" />
     <Content Include="home\images\setting.png" />
     <Content Include="home\images\setting_down.png" />
-    <Content Include="home\index.html" />
     <Content Include="test\dragAndDrop.html" />
     <Content Include="test\dragAndDrop2.html" />
     <Content Include="test\index.html" />
